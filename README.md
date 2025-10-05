@@ -1,9 +1,10 @@
 # Todo List 代辦事項應用程式
 
-[![CI/CD Pipeline](https://github.com/username/todolist/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/username/todolist/actions)
-[![Frontend Tests](https://github.com/username/todolist/workflows/Frontend%20Tests/badge.svg)](https://github.com/username/todolist/actions)
-[![codecov](https://codecov.io/gh/username/todolist/branch/main/graph/badge.svg)](https://codecov.io/gh/username/todolist)
+[![CI/CD Pipeline](https://github.com/17app001/todolist-cicd/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/17app001/todolist-cicd/actions)
+[![Frontend Tests](https://github.com/17app001/todolist-cicd/workflows/Frontend%20Tests/badge.svg)](https://github.com/17app001/todolist-cicd/actions)
+[![codecov](https://codecov.io/gh/17app001/todolist-cicd/branch/master/graph/badge.svg)](https://codecov.io/gh/17app001/todolist-cicd)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-blue)](https://17app001.github.io/todolist-cicd/frontend/)
 
 這是一個全端的代辦事項應用程式，使用 Django 作為後端 API，原生 JavaScript 作為前端。
 

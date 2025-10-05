@@ -173,7 +173,8 @@ kubectl apply -f k8s-deployment.yaml
 
 ## 相關連結
 
-- [GitHub Repository](https://github.com/username/todolist)
-- [Production Deployment](https://todolist.example.com)
-- [Staging Environment](https://staging-todolist.example.com)
-- [CI/CD Dashboard](https://github.com/username/todolist/actions)
+- [GitHub Repository](https://github.com/17app001/todolist-cicd)
+- [Live Demo](https://17app001.github.io/todolist-cicd/frontend/)
+- [CI/CD Dashboard](https://github.com/17app001/todolist-cicd/actions)
+- [Issues](https://github.com/17app001/todolist-cicd/issues)
+- [Pull Requests](https://github.com/17app001/todolist-cicd/pulls)
