@@ -1,0 +1,151 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  PYTHON_VERSION: '3.13'
+  NODE_VERSION: '18'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: todolist_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Cache Python dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install coverage pytest pytest-django
+        
+    - name: Run Django tests
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/todolist_test
+        SECRET_KEY: test-secret-key-for-ci
+        DEBUG: False
+      run: |
+        python manage.py collectstatic --noinput
+        python manage.py migrate
+        coverage run --source='.' manage.py test
+        coverage report
+        coverage xml
+        
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Install linting tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 black isort
+        
+    - name: Run Python linting
+      run: |
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        black --check .
+        isort --check-only .
+
+  security:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Install security tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install bandit safety
+        pip install -r requirements.txt
+        
+    - name: Run security checks
+      run: |
+        bandit -r . -x tests/
+        safety check
+
+  build-and-deploy:
+    needs: [test, lint, security]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Build application
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        python manage.py collectstatic --noinput
+        
+    - name: Create deployment package
+      run: |
+        mkdir -p deploy
+        cp -r . deploy/
+        cd deploy && zip -r ../todolist-app.zip . -x "*.git*" "*.pytest_cache*" "*__pycache__*"
+        
+    - name: Upload deployment artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: todolist-deployment
+        path: todolist-app.zip
+        
+    # 取消註解以下步驟以啟用實際部署
+    # - name: Deploy to production
+    #   run: |
+    #     echo "部署到生產環境"
+    #     # 在此添加您的部署腳本

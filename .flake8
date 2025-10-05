@@ -1,0 +1,19 @@
+[flake8]
+max-line-length = 88
+exclude = 
+    migrations/,
+    __pycache__,
+    manage.py,
+    settings.py,
+    .venv/,
+    .git/,
+    .tox/,
+    build/,
+    dist/,
+    *.egg-info/
+ignore = 
+    E203,  # whitespace before ':'
+    E501,  # line too long
+    W503,  # line break before binary operator
+per-file-ignores =
+    __init__.py:F401

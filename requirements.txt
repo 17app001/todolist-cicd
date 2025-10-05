@@ -1,0 +1,25 @@
+# Django 核心依賴
+Django==5.2.7
+djangorestframework==3.15.2
+django-cors-headers==4.4.0
+
+# 生產環境依賴
+psycopg2-binary==2.9.9
+gunicorn==21.2.0
+redis==5.0.1
+
+# 開發工具
+flake8==6.1.0
+black==23.9.1
+isort==5.12.0
+bandit==1.7.5
+safety==2.3.5
+
+# 測試依賴
+pytest==7.4.3
+pytest-django==4.7.0
+coverage==7.3.2
+factory-boy==3.3.0
+
+# 監控和日誌
+django-extensions==3.2.3

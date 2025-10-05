@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List 代辦事項</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Todo List 代辦事項</h1>
+        
+        <!-- 新增待辦事項表單 -->
+        <form id="todoForm" class="todo-form">
+            <input type="text" id="todoTitle" placeholder="輸入待辦事項標題" required>
+            <input type="text" id="todoDescription" placeholder="輸入描述 (可選)">
+            <button type="submit">新增</button>
+        </form>
+
+        <!-- 過濾按鈕 -->
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">全部</button>
+            <button class="filter-btn" data-filter="pending">待完成</button>
+            <button class="filter-btn" data-filter="completed">已完成</button>
+        </div>
+
+        <!-- 待辦事項列表 -->
+        <div id="todoList" class="todo-list">
+            <!-- 動態生成的待辦事項會在這裡 -->
+        </div>
+
+        <!-- 統計資訊 -->
+        <div class="stats">
+            <span id="totalCount">總計: 0</span>
+            <span id="pendingCount">待完成: 0</span>
+            <span id="completedCount">已完成: 0</span>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
